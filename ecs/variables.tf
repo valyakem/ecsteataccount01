@@ -32,6 +32,7 @@ variable "container_memory" {
 
 variable "container_image" {
   description = "Docker image to be launched"
+  default = "440153443065.dkr.ecr.us-east-1.amazonaws.com/testecr"
 }
 
 variable "aws_alb_target_group_arn" {
