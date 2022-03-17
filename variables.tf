@@ -79,6 +79,7 @@ variable "health_check_path" {
 
 variable "tsl_certificate_arn" {
   description = "The ARN of the certificate that the ALB uses for https"
+  default = "mycertificatearn"
 }
 
 variable "repo_name" {
