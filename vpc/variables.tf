@@ -13,30 +13,13 @@ variable "cidr" {
 
 variable "public_subnets" {
   description = "List of public subnets"
-   type = list(string)
-   default = [
-    "10.0.0.0/20",
-    "10.0.32.0/20",
-    "10.0.64.0/20"
-  ]
 }
 
 variable "private_subnets" {
   description = "List of private subnets"
-  type = list(string)
-  default =  [
-     ["10.0.16.0/20", 
-     "10.0.48.0/20", 
-     "10.0.80.0/20"]
-    ]
 }
 
 variable "availability_zones" {
   description = "List of availability zones"
-  type = list(string)
-  default = [
-    "us-east-1a",
-    "us-east-1b"
-  ]
 }
 
