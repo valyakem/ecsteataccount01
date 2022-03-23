@@ -117,12 +117,6 @@ variable "sg_name" {
   default = "arcablancapt-sg-alb-prod"
 }
 
-variable "availability_zones" {
-  description         = "Availability zones"
-  type = list
-  default = ["us-east-1a", "us-east-1b", "us-east-1c"]
-}
-
 variable "ecs_name" {
   description = "Elastic Container Service Name"
   default     ="arcablanca-ecs"
