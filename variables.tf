@@ -30,7 +30,10 @@ variable "environment" {
 #   description = "A map of secrets that is passed into the application. Formatted like ENV_VAR = VALUE"
 #   type        = map
 # }
-
+variable "vpcname" {
+description = "name of vpc"
+default = "arcablanca-vpc"
+}
 
 variable "availability_zones" {
   description = "a comma-separated list of availability zones, defaults to all AZ of the region, if set to something other than the defaults, both private_subnets and public_subnets have to be defined as well"
@@ -50,6 +53,10 @@ variable "private_subnets" {
 variable "public_subnets" {
   description = "a list of CIDRs for public subnets in your VPC, must be set if the cidr variable is defined, needs to have as many elements as there are availability zones"
   default     = ["10.0.16.0/20", "10.0.48.0/20", "10.0.80.0/20"]
+}
+
+variable "alb_name" {
+  default = "arcablanca-alb-prod"
 }
 
 variable "service_desired_count" {
@@ -120,4 +127,8 @@ variable "sg_name" {
 variable "ecs_name" {
   description = "Elastic Container Service Name"
   default     ="arcablanca-ecs"
+}
+
+variable "aws-region" {
+  default = "us-east-1"
 }

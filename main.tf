@@ -32,9 +32,9 @@
 module "vpc" {
   source             = "./vpc"
   name               = var.vpcname
-  cidr               = var.vpc_cidr
+  cidr               = var.cidr
   private_subnets    = var.private_subnets
-  public_subnets     = var.public_subnetslist
+  public_subnets     = var.public_subnets
   availability_zones = var.availability_zones
   environment        = var.environment
 }
