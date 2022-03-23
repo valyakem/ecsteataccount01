@@ -1,13 +1,16 @@
 variable "name" {
   description = "the name of your stack, e.g. \"demo\""
+  default     = "arcablanca" 
 }
 
 variable "environment" {
   description = "the name of your environment, e.g. \"prod\""
+  default     = "prod" 
 }
 
 variable "subnets" {
   description = "Comma separated list of subnet IDs"
+  default     = ["10.0.0.0/20", "10.0.32.0/20", "10.0.64.0/20"]
 }
 
 variable "vpc_id" {

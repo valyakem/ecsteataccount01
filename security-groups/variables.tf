@@ -1,9 +1,11 @@
 variable "name" {
   description = "the name of your stack, e.g. \"demo\""
+  default     = "arcablanca-pt" 
 }
 
 variable "environment" {
   description = "the name of your environment, e.g. \"prod\""
+  default     = "prod" 
 }
 
 variable "vpc_id" {
@@ -12,4 +14,5 @@ variable "vpc_id" {
 
 variable "container_port" {
   description = "Ingres and egress port of the container"
+  default     = 5000 
 }
