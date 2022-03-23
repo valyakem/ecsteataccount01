@@ -83,21 +83,47 @@ variable "tsl_certificate_arn" {
 }
 
 variable "repo_name" {
+  description = "repository name"
   type    = string
   default = "testecr"
 }
 
 variable "branch_name" {
-  type    = string
+  description = "default commit branch"
   default = "main"
 }
 
 variable "build_project" {
-  type    = string
+  description = "codebuild project name"
   default = "dev-build-repo"
 }
 
 variable "uri_repo" {
-  type = string
+  description = "uri repo information"
   default ="440153443065.dkr.ecr.us-east-1.amazonaws.com/testecr"
+}
+
+variable "ecr_name" {
+  description = "Elastic container registry name"
+  default     ="testecr"
+}
+
+variable "prodenvironment" {
+  description = "Deployment environment name"
+  default     ="prod"
+}
+
+variable "sg_name" {
+  default = "arcablancapt-sg-alb-prod"
+}
+
+variable "availability_zones" {
+  description         = "Availability zones"
+  type = list
+  default = ["us-east-1a", "us-east-1b", "us-east-1c"]
+}
+
+variable "ecs_name" {
+  description = "Elastic Container Service Name"
+  default     ="arcablanca-ecs"
 }
