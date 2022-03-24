@@ -267,11 +267,6 @@ variable "final_snapshot_identifier_prefix" {
   default     = "final"
 }
 
-variable "instance_class" {
-  description = "The instance type of the RDS instance"
-  type        = string
-  default     = null
-}
 
 variable "db_name" {
   description = "The DB name to create. If omitted, no database is created initially"
