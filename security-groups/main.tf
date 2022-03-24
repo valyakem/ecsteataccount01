@@ -18,7 +18,6 @@ resource "aws_security_group" "alb" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
-
   egress {
     protocol         = "-1"
     from_port        = 0
@@ -53,6 +52,7 @@ resource "aws_security_group" "ecs_tasks" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
+  
   tags = {
     Name        = "${var.name}-sg-task-${var.environment}"
     Environment = var.environment
