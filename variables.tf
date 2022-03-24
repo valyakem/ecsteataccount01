@@ -161,4 +161,3 @@ variable "snsname" {
   default      = "arcablanca-auto-sns"
 }
 
-variable "vpc_id" {}
