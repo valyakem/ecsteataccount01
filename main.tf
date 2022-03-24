@@ -96,7 +96,7 @@ module "ecs" {
 }
 
 module "security_groups" {
-  source  = "./security_groups"
+  source  = "./security-groups"
 
   name        = local.name
   description = "Complete PostgreSQL example security group"
@@ -131,7 +131,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
   engine_version                = "10"
   username                      = "arcablancausr"
   password                      = var.db_password
-  db_subnet_group_name          = module.vpc.private_subnets
+  db_subnet_group_name          = module.vpc.private_subnets.name
   vpc_security_group_ids        = [aws_security_group.arcablanca_rds_sg.id]
   parameter_group_name          = "${var.parameter_group_name}"
   publicly_accessible           = false
