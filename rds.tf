@@ -1,4 +1,12 @@
-
+module "vpc" {
+  source             = "../vpc"
+  name               = var.vpcname
+  cidr               = var.cidr
+  private_subnets    = var.private_subnets
+  public_subnets     = var.public_subnets
+  availability_zones = var.availability_zones
+  environment        = var.environment
+}
 
 #==========================DB INSTANCE CODES======================
 #-------------------------------------------------------------------
@@ -34,10 +42,9 @@ resource "aws_db_subnet_group" "arcablanca_pt_dbsubnets" {
 #==========================PARAMETER  RDS SG======================
 #-------------------------------------------------------------------
 resource "aws_security_group" "arcablanca_rds_sg" {
-  depends_on = [aws_vpc.main.id]
   name                          = "abpt_web_sg"
   description                   = "Allow traffic for arcablanca web apps"
-  vpc_id                        = data.aws_vpc.main.id
+  vpc_id                        = module.vpc.id
 
   ingress {
       from_port         = 5432
