@@ -22,7 +22,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
 #-------------------------------------------------------------------
 resource "aws_db_subnet_group" "arcablanca_pt_dbsubnets" {
   name       = "main"
-  subnet_ids = "${aws_subnet.private.*.id[count.index]}"
+  subnet_ids = "${module.public_subnets.*.id[count.index]}"
 
   tags = {
     Name = "Arca-Blanca-PT-dbSubnet-Group"
