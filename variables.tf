@@ -160,5 +160,3 @@ variable "snsname" {
   description  = "Name of sns topic"
   default      = "arcablanca-auto-sns"
 }
-
-variable "vpc_id" {}
