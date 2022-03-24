@@ -34,7 +34,7 @@ resource "aws_db_subnet_group" "arcablanca_pt_dbsubnets" {
 #==========================PARAMETER  RDS SG======================
 #-------------------------------------------------------------------
 resource "aws_security_group" "arcablanca_rds_sg" {
-  depends_on = "${aws_vpc.main}"
+  depends_on = [aws_vpc.main]
   name                          = "abpt_web_sg"
   description                   = "Allow traffic for arcablanca web apps"
   vpc_id                        = data.aws_vpc.main.id
