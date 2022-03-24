@@ -86,7 +86,7 @@ variable "health_check_path" {
 
 variable "tsl_certificate_arn" {
   description = "The ARN of the certificate that the ALB uses for https"
-  default = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
+  default = "arn:aws:acm:us-east-1:440153443065:certificate/16aee8f3-8f76-4a78-ba7b-fc0934bae6a1"
 }
 
 variable "repo_name" {
