@@ -11,6 +11,14 @@ resource "aws_security_group" "alb" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
+  ingress  {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      description = "PostgreSQL access from within VPC"
+      cidr_blocks = ["0.0.0.0/0"]
+  }
+
   ingress {
     protocol         = "tcp"
     from_port        = 443
