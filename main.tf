@@ -95,13 +95,12 @@ module "ecs" {
   # container_secrets_arns = module.secrets.application_secrets_arn
 }
 
-module "security_group" {
-  source  = "terraform-aws-modules/security-group/aws"
-  version = "~> 4.0"
+module "security_groups" {
+  source  = "./security_groups"
 
   name        = local.name
   description = "Complete PostgreSQL example security group"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = module.vpc.id
 
   # ingress
   ingress_with_cidr_blocks = [
@@ -132,7 +131,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
   engine_version                = "10"
   username                      = "arcablancausr"
   password                      = var.db_password
-  db_subnet_group_name          = "${aws_db_subnet_group.arcablanca_pt_dbsubnets.id}"
+  db_subnet_group_name          = module.vpc.private_subnets.name
   vpc_security_group_ids        = [aws_security_group.arcablanca_rds_sg.id]
   parameter_group_name          = "${var.parameter_group_name}"
   publicly_accessible           = false
@@ -158,19 +157,19 @@ resource "aws_db_subnet_group" "arcablanca_pt_dbsubnets" {
 resource "aws_security_group" "arcablanca_rds_sg" {
   name                          = "abpt_web_sg"
   description                   = "Allow traffic for arcablanca web apps"
-  vpc_id                        =  aws_vpc.main[0].id
+  vpc_id                        =  aws_vpc.vpc.id
 
   ingress {
       from_port         = 5432
       to_port           = 5432
       protocol          = "tcp"
-      security_groups   = ["${aws_security_group.alb.id}"]
+      security_groups   = module.alb.id
   }  
   ingress {
       from_port         = 5433
       to_port           = 5433
       protocol          = "tcp"
-      security_groups = ["${aws_security_group.alb.id}"]
+      security_groups = module.alb.id
   }
   egress {
     from_port        = 0
