@@ -1,13 +1,3 @@
-module "vpc" {
-  source             = "./vpc"
-  name               = var.vpcname
-  cidr               = var.cidr
-  private_subnets    = var.private_subnets
-  public_subnets     = var.public_subnets
-  availability_zones = var.availability_zones
-  environment        = var.environment
-}
-
 #==========================DB INSTANCE CODES======================
 #-------------------------------------------------------------------
 resource "aws_db_instance" "arcablanca_pt_rds" {
