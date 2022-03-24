@@ -169,6 +169,7 @@ variable "snsname" {
 variable "identifier" {
   description = "The name of the RDS instance"
   type        = string
+  default     = "arcablanca-pt-rds"
 }
 
 variable "allocated_storage" {
