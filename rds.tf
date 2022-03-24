@@ -1,3 +1,8 @@
+
+data "aws_vpc" "main" {
+  id = var.vpc_id
+}
+
 #==========================DB INSTANCE CODES======================
 #-------------------------------------------------------------------
 resource "aws_db_instance" "arcablanca_pt_rds" {
@@ -34,13 +39,13 @@ resource "aws_db_subnet_group" "arcablanca_pt_dbsubnets" {
 resource "aws_security_group" "arcablanca_rds_sg" {
   name                          = "abpt_web_sg"
   description                   = "Allow traffic for arcablanca web apps"
-  vpc_id                        = "${aws_vpc.main.id}"
+  vpc_id                        = "${data.aws_vpc.main.id}"
 
   ingress {
       from_port         = 5432
       to_port           = 5432
       protocol          = "tcp"
-      security_groups   = ["${aws_security_group.albg.id}"]
+      security_groups   = ["${aws_security_group.alb.id}"]
   }  
   ingress {
       from_port         = 5433
