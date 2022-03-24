@@ -1,5 +1,5 @@
 variable "vpc_id" {}
-data "aws_vpc" "selected" {
+data "aws_vpc" "main" {
   id = var.vpc_id
 }
 
@@ -39,7 +39,7 @@ resource "aws_db_subnet_group" "arcablanca_pt_dbsubnets" {
 resource "aws_security_group" "arcablanca_rds_sg" {
   name                          = "abpt_web_sg"
   description                   = "Allow traffic for arcablanca web apps"
-  vpc_id                        = "${data.aws_vpc.main.id}"
+  vpc_id                        = data.aws_vpc.main.id
 
   ingress {
       from_port         = 5432
