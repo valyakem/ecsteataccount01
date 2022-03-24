@@ -121,109 +121,112 @@ module "security_group" {
 # RDS Module
 ################################################################################
 
-module "db" {
-  source = "../../"
+#==========================DB INSTANCE CODES======================
+#-------------------------------------------------------------------
+resource "aws_db_instance" "arcablanca_pt_rds" {
+  identifier                    = "${var.rdsidentifier}"
+  instance_class                = "${var.instance_class}"
+  allocated_storage             = 5
+  max_allocated_storage         = 100
+  engine                        = "postgres"
+  engine_version                = "10"
+  username                      = "arcablancausr"
+  password                      = var.db_password
+  db_subnet_group_name          = "${aws_db_subnet_group.arcablanca_pt_dbsubnets.id}"
+  vpc_security_group_ids        = [aws_security_group.arcablanca_rds_sg.id]
+  parameter_group_name          = "${var.parameter_group_name}"
+  publicly_accessible           = false
+  skip_final_snapshot           = true
+  auto_minor_version_upgrade    = false
+  backup_window                 = "01:00-01:30" 
+}
 
-  identifier = local.name
+#==========================DB SUBNET GROUP======================
+#-------------------------------------------------------------------
+resource "aws_db_subnet_group" "arcablanca_pt_dbsubnets" {
+  name       = "main"
+  subnet_ids = "${module.public_subnets.*.id[count.index]}"
 
-  # All available versions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts
-  engine               = "postgres"
-  engine_version       = "14.1"
-  family               = "postgres14" # DB parameter group
-  major_engine_version = "14"         # DB option group
-  instance_class       = "db.t4g.large"
-
-  allocated_storage     = 20
-  max_allocated_storage = 100
-
-  # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
-  # "Error creating DB Instance: InvalidParameterValue: MasterUsername
-  # user cannot be used as it is a reserved word used by the engine"
-  db_name  = "completePostgresql"
-  username = "complete_postgresql"
-  port     = 5432
-
-  multi_az               = true
-  db_subnet_group_name   = module.vpc.database_subnet_group
-  vpc_security_group_ids = [module.security_group.security_group_id]
-
-  maintenance_window              = "Mon:00:00-Mon:03:00"
-  backup_window                   = "03:00-06:00"
-  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
-  create_cloudwatch_log_group     = true
-
-  backup_retention_period = 0
-  skip_final_snapshot     = true
-  deletion_protection     = false
-
-  performance_insights_enabled          = true
-  performance_insights_retention_period = 7
-  create_monitoring_role                = true
-  monitoring_interval                   = 60
-  monitoring_role_name                  = "example-monitoring-role-name"
-  monitoring_role_description           = "Description for monitoring role"
-
-  parameters = [
-    {
-      name  = "autovacuum"
-      value = 1
-    },
-    {
-      name  = "client_encoding"
-      value = "utf8"
-    }
-  ]
-
-  tags = local.tags
-  db_option_group_tags = {
-    "Sensitive" = "low"
-  }
-  db_parameter_group_tags = {
-    "Sensitive" = "low"
+  tags = {
+    Name = "Arca-Blanca-PT-dbSubnet-Group"
   }
 }
 
-module "db_default" {
-  source = "../../"
+#==========================PARAMETER  RDS SG======================
+#-------------------------------------------------------------------
 
-  identifier = "${local.name}-default"
+resource "aws_security_group" "arcablanca_rds_sg" {
+  name                          = "abpt_web_sg"
+  description                   = "Allow traffic for arcablanca web apps"
+  vpc_id                        =  aws_vpc.main[0].id
 
-  create_db_option_group    = false
-  create_db_parameter_group = false
-
-  # All available versions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts
-  engine               = "postgres"
-  engine_version       = "14.1"
-  family               = "postgres14" # DB parameter group
-  major_engine_version = "14"         # DB option group
-  instance_class       = "db.t4g.large"
-
-  allocated_storage = 20
-
-  # NOTE: Do NOT use 'user' as the value for 'username' as it throws:
-  # "Error creating DB Instance: InvalidParameterValue: MasterUsername
-  # user cannot be used as it is a reserved word used by the engine"
-  db_name  = "completePostgresql"
-  username = "complete_postgresql"
-  port     = 5432
-
-  db_subnet_group_name   = module.vpc.database_subnet_group
-  vpc_security_group_ids = [module.security_group.security_group_id]
-
-  maintenance_window      = "Mon:00:00-Mon:03:00"
-  backup_window           = "03:00-06:00"
-  backup_retention_period = 0
-
-  tags = local.tags
+  ingress {
+      from_port         = 5432
+      to_port           = 5432
+      protocol          = "tcp"
+      security_groups   = ["${aws_security_group.alb.id}"]
+  }  
+  ingress {
+      from_port         = 5433
+      to_port           = 5433
+      protocol          = "tcp"
+      security_groups = ["${aws_security_group.alb.id}"]
+  }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 }
 
-module "db_disabled" {
-  source = "../../"
 
-  identifier = "${local.name}-disabled"
+#==========================PARAMETER  GROUPs======================
+#-------------------------------------------------------------------
+resource "aws_db_parameter_group" "arcablanca-pt-rds" {
+  name   = "${var.parameter_group_name}"
+  family = "postgres10"
 
-  create_db_instance        = false
-  create_db_parameter_group = false
-  create_db_option_group    = false
+  parameter {
+    name  = "log_connections"
+    value = "1"
+  }
+}
+
+
+#==========================DB CREDENTIALSC======================
+#-------------------------------------------------------------------
+variable "db_password" {
+  description = "RDS root user password"
+  type        = string
+  sensitive   = true
+  default = "+Laravan2010"
+}
+
+variable "parameter_group_name" {
+  description           = "Parameter group name" 
+  default               = "arcablancaptrds"
+}
+
+
+#==========================DB OUTPUT======================
+#-------------------------------------------------------------------
+output "rds_hostname" {
+  description = "RDS instance hostname"
+  value       = aws_db_instance.arcablanca_pt_rds.address
+  sensitive   = true
+}
+
+output "rds_port" {
+  description = "RDS instance port"
+  value       = aws_db_instance.arcablanca_pt_rds.port
+  sensitive   = true
+}
+
+output "rds_username" {
+  description = "RDS instance root username"
+  value       = aws_db_instance.arcablanca_pt_rds.username
+  sensitive   = true
 }
 
