@@ -149,3 +149,14 @@ variable "terraform_pipeline" {
   description                   = "Name of pipeline"
   default                       = "arcablancapipeline" 
 }
+
+variable "auto_apply" {
+  type        = bool
+  default     = false
+  description = "Whether to automatically apply changes when a Terraform plan is successful. Defaults to false."
+}
+
+variable "snsname" {
+  description  = "Name of sns topic"
+  default      = "arcablanca-auto-sns"
+}

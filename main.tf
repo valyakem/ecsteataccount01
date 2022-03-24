@@ -96,8 +96,3 @@ module "ecs" {
 }
 
 
-module "ecs_codepipeline" {
-  source                  = "./ecs_codepipeline"
-  name                    = var.terraform_pipeline
-  vcs_repo                = var.vcs_repo
-}
