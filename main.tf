@@ -96,7 +96,6 @@ module "ecs" {
 }
 
 module "security_groups" {
-  source  = "./security-groups"
 
   name        = local.name
   description = "Complete PostgreSQL example security group"
