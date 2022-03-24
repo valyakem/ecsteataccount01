@@ -132,3 +132,14 @@ variable "ecs_name" {
 variable "aws-region" {
   default = "us-east-1"
 }
+
+#=======================RDS VARIABLES========================
+variable "rdsidentifier" {
+  description                   = "A unique name given to our rds instance"
+  default                       = "arcablanca-pt-rds" 
+}
+
+variable "instance_class" {
+  description                   = "Chosen instance type for your database e.g., db.t3.micro, db.t2.micro etc"
+  default                       = "db.t3.micro"
+}
