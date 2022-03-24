@@ -1,0 +1,21 @@
+[
+    {
+      "name": "arcablancaapp",
+      "image": "440153443065.dkr.ecr.us-east-1.amazonaws.com/testecr",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 5000,
+          "hostPort": 5000
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "Arcablanca-tasklog-group",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "streaming"
+        }
+      }
+    }
+  ]

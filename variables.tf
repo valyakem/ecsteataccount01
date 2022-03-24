@@ -143,3 +143,9 @@ variable "instance_class" {
   description                   = "Chosen instance type for your database e.g., db.t3.micro, db.t2.micro etc"
   default                       = "db.t3.micro"
 }
+
+
+variable "terraform_pipeline" {
+  description                   = "Name of pipeline"
+  default                       = "arcablancapipeline" 
+}
