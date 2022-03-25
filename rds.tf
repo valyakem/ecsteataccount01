@@ -9,7 +9,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
   engine_version                = "10"
   username                      = "arcablancausr"
   password                      = var.db_password
-  db_subnet_group_name          = "${module.vpc.private_subnets[0].id}"
+  db_subnet_group_name          = "${module.vpc.private_subnets[0].name}"
   vpc_security_group_ids        = [module.security_groups[0].id]
   parameter_group_name          = "${var.parameter_group_name}"
   publicly_accessible           = false
@@ -40,13 +40,13 @@ resource "aws_security_group" "arcablanca_rds_sg" {
       from_port         = 5432
       to_port           = 5432
       protocol          = "tcp"
-      security_groups   = [module.alb.alb_security_groups[0].id]
+      security_groups   = [module.alb.alb_security_groups]
   }  
   ingress {
       from_port         = 5433
       to_port           = 5433
       protocol          = "tcp"
-      security_groups = [module.alb.alb_security_groups[0].id]
+      security_groups = [module.alb.alb_security_groups]
   }
   egress {
     from_port        = 0
