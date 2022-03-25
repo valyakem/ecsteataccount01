@@ -31,9 +31,9 @@ variable "family" {
 variable "parameters" {
   description = "A list of DB parameter maps to apply"
   type        = list(map(string))
-  default     = [{
-    "Name" : "arcablanca-postgres-rds"
-  }]
+  default     = [
+    {"name": "log_connections", "value" : "1"}
+  ]
 }
 
 variable "tags" {
