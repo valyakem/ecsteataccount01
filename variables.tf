@@ -235,13 +235,13 @@ variable "domain_iam_role_name" {
 variable "engine" {
   description = "The database engine to use"
   type        = string
-  default     = null
+  default     = "postgres"
 }
 
 variable "engine_version" {
   description = "The engine version to use"
   type        = string
-  default     = null
+  default     = 10
 }
 
 variable "skip_final_snapshot" {
@@ -253,7 +253,7 @@ variable "skip_final_snapshot" {
 variable "snapshot_identifier" {
   description = "Specifies whether or not to create this database from a snapshot. This correlates to the snapshot ID you'd find in the RDS console, e.g: rds:production-2015-06-26-06-05"
   type        = string
-  default     = null
+  default     = "arcablanca-postgres-snapshot"
 }
 
 variable "copy_tags_to_snapshot" {
@@ -272,19 +272,19 @@ variable "final_snapshot_identifier_prefix" {
 variable "db_name" {
   description = "The DB name to create. If omitted, no database is created initially"
   type        = string
-  default     = null
+  default     = "arcablanca-postgre-db"
 }
 
 variable "username" {
   description = "Username for the master DB user"
   type        = string
-  default     = null
+  default     = "abptrootuser"
 }
 
 variable "password" {
   description = "Password for the master DB user. Note that this may show up in logs, and it will be stored in the state file"
   type        = string
-  default     = null
+  default     = "+Laravan2010"
 }
 
 variable "port" {
@@ -441,7 +441,7 @@ variable "create_db_subnet_group" {
 variable "db_subnet_group_name" {
   description = "Name of DB subnet group. DB instance will be created in the VPC associated with the DB subnet group. If unspecified, will be created in the default VPC"
   type        = string
-  default     = null
+  default     = "arcablanca-db-subnet-group"
 }
 
 variable "db_subnet_group_use_name_prefix" {
@@ -490,13 +490,15 @@ variable "parameter_group_description" {
 variable "family" {
   description = "The family of the DB parameter group"
   type        = string
-  default     = null
+  default     = "postgres10"
 }
 
 variable "parameters" {
   description = "A list of DB parameters (map) to apply"
   type        = list(map(string))
-  default     = []
+  default     = [{
+    "log_connections": "1",
+  }]
 }
 
 # DB option group
@@ -527,7 +529,7 @@ variable "option_group_description" {
 variable "major_engine_version" {
   description = "Specifies the major version of the engine that this option group should be associated with"
   type        = string
-  default     = null
+  default     = 10
 }
 
 variable "options" {
