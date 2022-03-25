@@ -22,7 +22,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
 #-------------------------------------------------------------------
 resource "aws_db_subnet_group" "arcablanca_pt_dbsubnets" {
   name       = "main"
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids = [module.vpc.private_subnets[0].id]
 
   tags = {
     Name = "Arca-Blanca-PT-dbSubnet-Group"
@@ -46,7 +46,7 @@ resource "aws_security_group" "arcablanca_rds_sg" {
       from_port         = 5433
       to_port           = 5433
       protocol          = "tcp"
-      security_groups = [module.security_groups[0].id]
+      security_groups = [module.security_groups["alb"].id]
   }
   egress {
     from_port        = 0
