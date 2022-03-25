@@ -32,8 +32,8 @@ variable "parameters" {
   description = "A list of DB parameter maps to apply"
   type        = list(map(string))
     default = [{
-      name  = "arcablanca-postgres-rds"
-      value = "1"
+      key  = "name"
+      value = "arcablanca-postgres-rds"
   }]
 }
 
