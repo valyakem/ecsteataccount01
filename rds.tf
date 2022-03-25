@@ -10,7 +10,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
   username                      = "arcablancausr"
   password                      = var.db_password
   db_subnet_group_name          = "${module.vpc.private_subnets[0].id}"
-  vpc_security_group_ids        = [module.security_groups["alb"].id, module.security_groups["ecs_tasks"].id]
+  vpc_security_group_ids        = [module.security_groups[0].id, module.security_groups[1].id]
   parameter_group_name          = "${var.parameter_group_name}"
   publicly_accessible           = false
   skip_final_snapshot           = true
