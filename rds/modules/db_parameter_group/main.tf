@@ -16,8 +16,8 @@ resource "aws_db_parameter_group" "this" {
   dynamic "parameter" {
     for_each = var.parameters
     content {
-      name         = parameter.value.name
-      value        = parameter.value.value
+      name         = "arcablanca-postgres-rds"
+      value        = "1"
       apply_method = lookup(parameter.value, "apply_method", null)
     }
   }
