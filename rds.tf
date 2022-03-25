@@ -40,7 +40,7 @@ resource "aws_security_group" "arcablanca_rds_sg" {
       from_port         = 5432
       to_port           = 5432
       protocol          = "tcp"
-      security_groups   = [module.alb.alb_security_groups.id]
+      security_groups   = [module.alb.security_groups[0].id]
   }  
   ingress {
       from_port         = 5433
