@@ -32,7 +32,7 @@ variable "parameters" {
   description = "A list of DB parameter maps to apply"
   type        = list(map(string))
   default     = [
-    {"name": "log_connections", "value" : "1"}
+    {"name": "name", "value" : "arcablanca-rds"}
   ]
 }
 
