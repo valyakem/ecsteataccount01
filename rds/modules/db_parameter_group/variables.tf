@@ -32,7 +32,7 @@ variable "parameters" {
   description = "A list of DB parameter maps to apply"
   type        = list(map(string))
   default     = [
-    {"name": "name", "value" : "arcablanca-rds"}
+    {"name": "arcablanca-rds"}
   ]
 }
 
@@ -40,6 +40,6 @@ variable "tags" {
   description = "A mapping of tags to assign to the resource"
   type        = map(string)
   default     = {
-    "name": "arcablanca-postgres-rds"
+    "Name": "arcablanca-postgres-rds"
   }
 }
