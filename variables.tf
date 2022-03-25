@@ -253,7 +253,7 @@ variable "skip_final_snapshot" {
 variable "snapshot_identifier" {
   description = "Specifies whether or not to create this database from a snapshot. This correlates to the snapshot ID you'd find in the RDS console, e.g: rds:production-2015-06-26-06-05"
   type        = string
-  default     = "arcablanca-postgres-snapshot"
+  default     = null
 }
 
 variable "copy_tags_to_snapshot" {
