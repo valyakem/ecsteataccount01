@@ -1,3 +1,34 @@
+# provider "aws" {
+#   access_key = var.aws-access-key
+#   secret_key = var.aws-secret-key
+#   region     = var.aws-region
+#   version    = "~> 2.0"
+# }
+
+# terraform {
+#   backend "s3" {
+#     bucket  = "terraform-backend-store"
+#     encrypt = true
+#     key     = "terraform.tfstate"
+#     region  = "eu-central-1"
+#     # dynamodb_table = "terraform-state-lock-dynamo" - uncomment this line once the terraform-state-lock-dynamo has been terraformed
+#   }
+# }
+
+# resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
+#   name           = "terraform-state-lock-dynamo"
+#   hash_key       = "LockID"
+#   read_capacity  = 20
+#   write_capacity = 20
+#   attribute {
+#     name = "LockID"
+#     type = "S"
+#   }
+#   tags = {
+#     Name = "DynamoDB Terraform State Lock Table"
+#   }
+# }
+
 module "vpc" {
   source             = "./vpc"
   name               = var.vpcname
@@ -64,6 +95,9 @@ module "ecs" {
   # container_secrets_arns = module.secrets.application_secrets_arn
 }
 
+
+
+
 #-------------------------------------------------------------------------------#
 #=================================RDS MODULE====================================#
 #-------------------------------------------------------------------------------#
@@ -75,7 +109,7 @@ locals {
   create_random_password = local.create_db_instance && var.create_random_password
   password               = local.create_random_password ? random_password.master_password[0].result : var.password
 
-  db_subnet_group_name    = var.create_db_subnet_group ? module.vpc.private_subnets : var.db_subnet_group_name
+  db_subnet_group_name    = var.create_db_subnet_group ? module.db_subnet_group.db_subnet_group_id : var.db_subnet_group_name
   parameter_group_name_id = var.create_db_parameter_group ? module.db_parameter_group.db_parameter_group_id : var.parameter_group_name
 
   create_db_option_group = var.create_db_option_group && var.engine != "postgres"
@@ -97,7 +131,7 @@ module "db_subnet_group" {
   name            = coalesce(var.db_subnet_group_name, var.identifier)
   use_name_prefix = var.db_subnet_group_use_name_prefix
   description     = var.db_subnet_group_description
-  subnet_ids      = [module.vpc.private_subnets.id]
+  subnet_ids      = var.subnet_ids
 
   tags = merge(var.tags, var.db_subnet_group_tags)
 }

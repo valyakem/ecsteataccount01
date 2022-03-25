@@ -7,7 +7,7 @@ variable "create" {
 variable "name" {
   description = "The name of the option group"
   type        = string
-  default     = ""
+  default     = "arcablanca-rds-options"
 }
 
 variable "use_name_prefix" {
@@ -49,5 +49,7 @@ variable "timeouts" {
 variable "tags" {
   description = "A mapping of tags to assign to the resource"
   type        = map(string)
-  default     = {}
+  default     = {
+    "name": "arcablanca-postgres-rds"
+  }
 }

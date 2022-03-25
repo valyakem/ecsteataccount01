@@ -7,7 +7,7 @@ variable "create" {
 variable "name" {
   description = "The name of the DB parameter group"
   type        = string
-  default     = ""
+  default     = "arcablanca-rds-group"
 }
 
 variable "use_name_prefix" {
@@ -19,23 +19,27 @@ variable "use_name_prefix" {
 variable "description" {
   description = "The description of the DB parameter group"
   type        = string
-  default     = null
+  default     = "arcablanca-postgres-rds"
 }
 
 variable "family" {
   description = "The family of the DB parameter group"
   type        = string
-  default     = null
+  default     = "postgres10"
 }
 
 variable "parameters" {
   description = "A list of DB parameter maps to apply"
   type        = list(map(string))
-  default     = []
+  default     = [{
+    "Name" : "arcablanca-postgres-rds"
+  }]
 }
 
 variable "tags" {
   description = "A mapping of tags to assign to the resource"
   type        = map(string)
-  default     = {}
+  default     = {
+    "name": "arcablanca-postgres-rds"
+  }
 }

@@ -7,7 +7,7 @@ variable "create" {
 variable "name" {
   description = "The name of the DB subnet group"
   type        = string
-  default     = ""
+  default     = "arcablanca-rds-subnet-group"
 }
 
 variable "use_name_prefix" {
@@ -25,11 +25,13 @@ variable "description" {
 variable "subnet_ids" {
   description = "A list of VPC subnet IDs"
   type        = list(string)
-  default     = []
+  default     = ["10.0.0.0/20", "10.0.32.0/20", "10.0.64.0/20"]
 }
 
 variable "tags" {
   description = "A mapping of tags to assign to the resource"
   type        = map(string)
-  default     = {}
+  default     = {
+    "name": "arcablanca-subnet-group"
+  }
 }
