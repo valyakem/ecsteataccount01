@@ -30,7 +30,7 @@ variable "family" {
 
 variable "parameters" {
   description = "A list of DB parameter maps to apply"
-  type        = list(map(string))
+  type        = any
     default ={
       "key"   = "name"
       "value" = "arcablanca-postgres-rds"
