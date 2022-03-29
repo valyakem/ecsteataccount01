@@ -72,6 +72,7 @@ jobs:
     name: Login to ECR build and push
     runs-on: ubuntu-latest
     environment: production  
+    needs: [checkout, configure-cred]
 
     steps:
     - name: Login to Amazon ECR
@@ -96,7 +97,8 @@ jobs:
   render-task-definition:
     name: Render Task Definition
     runs-on: ubuntu-latest
-    environment: production 
+    environment: production
+    needs: [checkout, configure-cred, ecr-login-push] 
 
     steps:
     - name: Fill in the new image ID in the Amazon ECS task definition
@@ -111,7 +113,8 @@ jobs:
   deploy-task-definition:
     name: Deploy Tasks Definition
     runs-on: ubuntu-latest
-    environment: production 
+    environment: production
+    needs: [checkout, configure-cred, ecr-login-push, render-task-definition]  
 
     steps:
     - name: Deploy Amazon ECS task definition
