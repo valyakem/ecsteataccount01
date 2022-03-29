@@ -23,7 +23,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
 resource "aws_db_subnet_group" "arcablanca_pt_rds" {
   count         = length(var.private_subnets)
   name       = "aracablanca-rds"
-  subnet_ids = element(aws_subnet.private.*.id, count.index)
+  subnet_ids = element(module.vpc.private_subnets.*.id, count.index)
   //subnet_ids = element(aws_subnet.public.*.id, count.index)
 
   tags = {
