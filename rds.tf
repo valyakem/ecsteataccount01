@@ -22,7 +22,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
 #-------------------------------------------------------------------
 resource "aws_db_subnet_group" "arcablanca_pt_rds" {
   name       = "aracablanca-rds"
-  subnet_ids = element(aws_route_table.private.*.id)
+  subnet_ids = element(module.vpc.private_subnets)
 
   tags = {
     Name = "My DB subnet group"
