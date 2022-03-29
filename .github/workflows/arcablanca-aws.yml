@@ -94,7 +94,7 @@ jobs:
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
 
-  #======== Render Tasks Definition ====================
+  #======== Render Tasks Definition ====================#
   render-task-definition:
     name: Render Task Definition
     runs-on: ubuntu-latest
