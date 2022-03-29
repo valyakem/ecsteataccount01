@@ -33,7 +33,7 @@ on:
 
 env:
   AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}   # set this to your Amazon ECR repository name
+  ecr_repository: ${{ secrets.ECR_REPOSITORY }}   # set this to your Amazon ECR repository name
   ECS_SERVICE: ${{ secrets.ECS_SERVICE }} # set this to your Amazon ECS service name
   ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition                                         # file, e.g. .aws/task-definition.json
@@ -66,9 +66,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    - name: Login to Amazon ECR
-      id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+  
   #======== Login to ECR====================
   ecr-login-push:
     name: Login to ECR build and push
@@ -77,6 +75,10 @@ jobs:
     needs: [checkout, configure-cred]
 
     steps:
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      
     - name: ECR Login and Push
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -88,11 +90,11 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: $ECR_REPOSITORY
-        IMAGE_TAG: ECRTEST
+        ECR_REPOSITORY: $ecr_repository
+        IMAGE_TAG: ecrtest
       run: |
-        docker build -t $ECR_REPOSITORY:$IMAGE_TAG .
-        docker push $ECR_REPOSITORY:$IMAGE_TAG
+        docker build -t $ecr_repository:$IMAGE_TAG .
+        docker push $ecr_repository:$IMAGE_TAG
 
 
   #======== Render Tasks Definition ====================#
