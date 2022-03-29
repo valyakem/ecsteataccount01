@@ -29,7 +29,7 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches:
-      - main
+      - develop
 
 env:
   AWS_REGION: MY_AWS_REGION                   # set this to your preferred AWS region, e.g. us-west-1
@@ -42,8 +42,9 @@ env:
                                                # containerDefinitions section of your task definition
 
 jobs:
-  deploy:
-    name: Deploy
+  #======== Checkout from Codes ====================
+  checkout:
+    name: checkout
     runs-on: ubuntu-latest
     environment: production
 
@@ -51,6 +52,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+  #======== Configure Credentials ====================
+  configure-cred:
+    name: configurecred
+    runs-on: ubuntu-latest
+    environment: production
+    needs: checkout
+
+    steps:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -58,6 +67,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
 
+  #======== Login to ECR====================
+  ecr-login-push:
+    name: Login to ECR build and push
+    runs-on: ubuntu-latest
+    environment: production  
+
+    steps:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
@@ -75,6 +91,14 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
+
+  #======== Render Tasks Definition ====================
+  render-task-definition:
+    name: Render Task Definition
+    runs-on: ubuntu-latest
+    environment: production 
+
+    steps:
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
@@ -83,6 +107,13 @@ jobs:
         container-name: ${{ env.CONTAINER_NAME }}
         image: ${{ steps.build-image.outputs.image }}
 
+   #======== Render Tasks Definition ====================
+  deploy-task-definition:
+    name: Deploy Tasks Definition
+    runs-on: ubuntu-latest
+    environment: production 
+
+    steps:
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
