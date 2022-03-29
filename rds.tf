@@ -1,5 +1,5 @@
 data "aws_subnet_ids" "private" {
-  vpc_id = module.vpc.private_subnets.*.id
+  vpc_id = module.vpc.private_subnets[*].id
 }
 
 
