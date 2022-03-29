@@ -71,7 +71,7 @@ jobs:
           IMAGE_TAG: ${{ steps.vars.outputs.tag }}
         run: |
             echo Building the Docker image...
-            docker build -t $REPOSITORY_NAME:latest -f Dockerfile ../ 
+            docker build -t $REPOSITORY_NAME:latest -f Dockerfile ../../ 
             docker tag $REPOSITORY_NAME:latest $REPOSITORY_URI:latest
             docker tag $REPOSITORY_NAME:latest $REPOSITORY_URI:$IMAGE_TAG
 
