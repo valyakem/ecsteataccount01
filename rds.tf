@@ -22,7 +22,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
 #-------------------------------------------------------------------
 resource "aws_db_subnet_group" "arcablanca_pt_dbsubnets" {
   name       = "main"
-  subnet_ids = [module.vpc.private_subnets[0].id]
+  subnet_ids = [module.vpc.private_subnets.id]
 
   tags = {
     Name = "Arca-Blanca-PT-dbSubnet-Group"
@@ -77,7 +77,7 @@ variable "db_password" {
   description = "RDS root user password"
   type        = string
   sensitive   = true
-  default = "+Laravan2010"
+  default = "+Larav"
 }
 
 variable "parameter_group_name" {
