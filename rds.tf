@@ -1,6 +1,7 @@
 #==========================DB INSTANCE CODES======================
 #-------------------------------------------------------------------
 resource "aws_db_instance" "arcablanca_pt_rds" {
+  count         = length(var.private_subnets)
   identifier                    = "${var.rdsidentifier}"
   instance_class                = "${var.instance_class}"
   allocated_storage             = 5
@@ -9,7 +10,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
   engine_version                = "10"
   username                      = "arcablancausr"
   password                      = var.db_password
-  db_subnet_group_name          = "${aws_db_subnet_group.arcablanca_pt_rds.id}"
+  db_subnet_group_name          = "${aws_db_subnet_group.arcablanca_pt_rds[count.index]}"
  # vpc_security_group_ids        = [module.security_groups.name]
   parameter_group_name          = "${var.parameter_group_name}"
   publicly_accessible           = false
