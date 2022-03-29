@@ -1,8 +1,3 @@
-data "aws_subnet_ids" "private" {
-  vpc_id = module.vpc.private_subnets[*].id
-}
-
-
 #==========================DB INSTANCE CODES======================
 #-------------------------------------------------------------------
 resource "aws_db_instance" "arcablanca_pt_rds" {
