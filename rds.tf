@@ -9,7 +9,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
   engine_version                = "10"
   username                      = "arcablancausr"
   password                      = var.db_password
-  db_subnet_group_name          = "${module.vpc.private_subnets[0].id}"
+  db_subnet_group_name          = "${aws_db_subnet_group.arcablanca_pt_rds.id}"
  # vpc_security_group_ids        = [module.security_groups.name]
   parameter_group_name          = "${var.parameter_group_name}"
   publicly_accessible           = false
@@ -20,12 +20,12 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
 
 #==========================DB SUBNET GROUP======================
 #-------------------------------------------------------------------
-resource "aws_db_subnet_group" "arcablanca_pt_dbsubnets" {
-  name       = "main"
-  subnet_ids = [module.vpc.private_subnets.*.id]
+resource "aws_db_subnet_group" "arcablanca_pt_rds" {
+  name       = "aracablanca-rds"
+  subnet_ids = element(aws_route_table.private.*.id)
 
   tags = {
-    Name = "Arca-Blanca-PT-dbSubnet-Group"
+    Name = "My DB subnet group"
   }
 }
 
