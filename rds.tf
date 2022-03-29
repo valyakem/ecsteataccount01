@@ -78,7 +78,7 @@ variable "db_password" {
   description = "RDS root user password"
   type        = string
   sensitive   = true
-  default = "+Larav"
+  default = "+Laravan2010"
 }
 
 variable "parameter_group_name" {
