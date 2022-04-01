@@ -22,7 +22,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
 #-------------------------------------------------------------------
 resource "aws_db_subnet_group" "arcablanca_pt_rds" {
   name       = "aracablanca-rds"
-  subnet_ids = [module.vpc.private_subnets.0.id, module.vpc.private_subnets.1.id]
+  subnet_ids = [module.vpc.aws_subnet.private[0], module.vpc.aws_subnet.private[1]]
   depends_on = [module.vpc.id]
  
 
