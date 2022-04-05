@@ -8,8 +8,8 @@ terraform {
 	source = "hashicorp/random"
       }
       okta = {
-      source  = "oktadeveloper/okta"
-      version = ">= 2.6"
+      source  = "okta/okta"
+      version = "~> 3.18.0"
     }
 }
 
