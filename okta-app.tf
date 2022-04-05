@@ -1,14 +1,3 @@
-
-terraform {
-  required_providers {
-    okta = {
-      source = "okta/okta"
-      version = "~> 3.20"
-    }
-  }
-}
-
-
 resource "okta_group" "example" {
   name        = "nexgbit-testapp"
   description = "Next Bit Test App Group"
