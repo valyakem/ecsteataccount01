@@ -1,8 +1,3 @@
-
-variable "org_name" {}
-variable "api_token" {}
-variable "base_url" {}
-
 resource "okta_group" "example" {
   name        = "nexgbit-testapp"
   description = "Next Bit Test App Group"
