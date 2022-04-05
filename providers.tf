@@ -8,9 +8,10 @@ terraform {
 	source = "hashicorp/random"
       }
       okta = {
-      source = "hashicorp/okta"
+      source  = "oktadeveloper/okta"
     }
 }
+
 
 backend "remote" {
 organization = "Next-Generation-Business-IT-Solutions"
