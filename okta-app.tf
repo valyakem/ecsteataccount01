@@ -21,7 +21,7 @@ resource "okta_user_schema" "example" {
   description = "My custom property name"
   master      = "OKTA"
   scope       = "SELF"
-  user_type   = "${data.okta_user_type.example.id}"
+  user_type   = "${okta_user_type.example.id}"
 
   depends_on = [okta_user_type.example]
 }
