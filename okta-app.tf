@@ -14,7 +14,7 @@ resource "okta_user_type" "example" {
   description = "example"
 }
 
-resource "okta_user_schema" "example" {
+resource "okta_user_schema_property" "example" {
   index       = "customPropertyName"
   title       = "customPropertyName"
   type        = "string"
