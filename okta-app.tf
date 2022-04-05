@@ -22,6 +22,8 @@ resource "okta_user_schema" "example" {
   master      = "OKTA"
   scope       = "SELF"
   user_type   = "${data.okta_user_type.example.id}"
+
+  depends_on = [okta_user_type.example]
 }
 
 
