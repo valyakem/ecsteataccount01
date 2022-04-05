@@ -1,10 +1,18 @@
 # variable "name" {
 #   description = "the name of your stack, e.g. \"demo\""
 # }
+variable "org_name" {
+  default = "dev-25336660"
+}
 
-org_name = "dev-25336660"
-base_url = "okta.com"
-api_token = "00r66izP0D7rCVdbKMSuS97NZe95mKvBQ8UBP-qUIO"
+variable "base_url" {
+  default = "okta.com"
+}
+
+variable "api_token" {
+  default = "00r66izP0D7rCVdbKMSuS97NZe95mKvBQ8UBP-qUIO"
+}
+
 
 variable "environment" {
   description = "the name of your environment, e.g. \"prod\""
