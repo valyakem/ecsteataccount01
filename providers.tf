@@ -1,7 +1,3 @@
-variable "org_name" {}
-variable "api_token" {}
-variable "base_url" {}
-
 terraform {
   required_providers {
       aws = {

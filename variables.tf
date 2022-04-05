@@ -2,6 +2,10 @@
 #   description = "the name of your stack, e.g. \"demo\""
 # }
 
+org_name = "dev-25336660"
+base_url = "okta.com"
+api_token = "00r66izP0D7rCVdbKMSuS97NZe95mKvBQ8UBP-qUIO"
+
 variable "environment" {
   description = "the name of your environment, e.g. \"prod\""
   default     = "prod"
