@@ -7,6 +7,9 @@ terraform {
       random = {
 	source = "hashicorp/random"
       }
+      okta = {
+      source = "hashicorp/okta"
+    }
 }
 
 backend "remote" {

@@ -1,3 +1,4 @@
+
 resource "okta_group" "example" {
   name        = "nexgbit-testapp"
   description = "Next Bit Test App Group"
