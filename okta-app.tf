@@ -22,8 +22,6 @@ resource "okta_user_schema_property" "example" {
   master      = "OKTA"
   scope       = "SELF"
   user_type   = "${okta_user_type.example.id}"
-
-  depends_on = [okta_user_type.example]
 }
 
 
