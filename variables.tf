@@ -3,6 +3,7 @@
 # # }
 variable "org_name" {
   type = string
+  default = "dev-25336660"
 }
 
 variable "base_url" {
@@ -10,9 +11,9 @@ variable "base_url" {
   default = "okta.com"
 }
 
-variable "api_token" {
-  type = string
-}
+# variable "api_token" {
+#   type = string
+# }
 
 
 variable "environment" {
