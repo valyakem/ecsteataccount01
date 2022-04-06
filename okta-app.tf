@@ -13,6 +13,7 @@ data "external" "json" {
 
 locals {
   api_token = "${data.external.json.result.okta_api}"
+  org_name = "${data.external.json.result.org_name}"
 }
 
 provider "okta" {
