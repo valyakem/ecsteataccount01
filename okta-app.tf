@@ -1,13 +1,18 @@
-data "aws_secretsmanager_secret" "secrets" {
+data "aws_secretsmanager_secret" "by-arn" {
   arn = "arn:aws:secretsmanager:us-east-1:440153443065:secret:okta_api-imYrkl"
 }
 
-# data "aws_secretsmanager_secret_version" "current" {
-#   secret_id = data.aws_secretsmanager_secret.secrets.arn
-# }
+data "aws_secretsmanager_secret_version" "by-version-stage" {
+  secret_id = "${data.aws_secretsmanager_secret.by-arn.id}"
+}
+
+data "external" "json" {
+  program = ["echo", "${data.aws_secretsmanager_secret_version.by-version-stage.secret_string}"]
+}
+output "test" {value = "${data.external.json.result.test}"}
 
 locals {
-  api_token = data.aws_secretsmanager_secret.secrets.arn
+  api_token = "${data.aws_secretsmanager_secret_version.by-version-stage.secret_string}"
 }
 
 provider "okta" {
