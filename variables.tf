@@ -1,20 +1,20 @@
 # variable "name" {
 #   description = "the name of your stack, e.g. \"demo\""asdasd
+# # }
+# variable "org_name" {
+#   type = string
+#   default = ""
 # }
-variable "org_name" {
-  type = string
-  default = ""
-}
 
-variable "base_url" {
-  type = string
-  default = "okta.com"
-}
+# variable "base_url" {
+#   type = string
+#   default = "okta.com"
+# }
 
-variable "api_token" {
-  type = string
-  default = ""
-}
+# variable "api_token" {
+#   type = string
+#   default = ""
+# }
 
 
 variable "environment" {
