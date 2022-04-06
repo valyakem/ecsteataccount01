@@ -32,7 +32,5 @@ provider "aws" {
 }
 
 provider "okta" {
-  okta_org_name  = var.org_name
-  okta_base_url  = var.base_url
-  okta_api_token = var.api_token
+  
 }
