@@ -1,5 +1,5 @@
 data "aws_secretsmanager_secret" "secrets" {
-  arn = "arn:aws:secretsmanager:us-east-1:440153443065:secret:okta_api_token-xWtQcE"
+  arn = "arn:aws:secretsmanager:us-east-1:440153443065:secret:okta_api-imYrkl"
 }
 
 # data "aws_secretsmanager_secret_version" "current" {
