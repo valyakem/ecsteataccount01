@@ -1,5 +1,5 @@
 # variable "name" {
-#   description = "the name of your stack, e.g. \"demo\""
+#   description = "the name of your stack, e.g. \"demo\""asdasd
 # }
 variable "okta_org_name" {
   type = string
