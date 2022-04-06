@@ -2,14 +2,17 @@
 #   description = "the name of your stack, e.g. \"demo\""
 # }
 variable "okta_org_name" {
+  type = string
   default = ""
 }
 
 variable "okta_base_url" {
+  type = string
   default = "okta.com"
 }
 
 variable "okta_api_token" {
+  type = string
   default = ""
 }
 
