@@ -1,12 +1,19 @@
-data "aws_secretsmanager_secret_version" "creds" {
-  # Fill in the name you gave to your secret
-  secret_id = "okta_api_token"
+data "aws_secretsmanager_secret" "secrets" {
+  arn = "arn:aws:secretsmanager:us-east-1:440153443065:secret:okta_api_token-xWtQcE"
+}
+
+data "aws_secretsmanager_secret_version" "current" {
+  secret_id = data.aws_secretsmanager_secret.secrets.id
+}
+
+output "sensitive_example_hash" {
+  value = jsondecode(nonsensitive(data.aws_secretsmanager_secret_version.current.secret_string))
 }
 
 provider "okta" {
   org_name  = var.org_name
   base_url  = var.base_url
-  api_token = "${data.aws_secretsmanager_secret_version.secret_id}"
+  api_token = "${data.aws_secretsmanager_secret.secrets.id}"
 }
 
 resource "okta_group_schema_property" "example" {
