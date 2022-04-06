@@ -6,7 +6,7 @@ data "aws_secretsmanager_secret_version" "creds" {
 provider "okta" {
   org_name  = var.org_name
   base_url  = var.base_url
-  api_token = "${data.secret_id}"
+  api_token = "${data.aws_secretsmanager_secret_version.creds.secred_id}"
 }
 
 resource "okta_group_schema_property" "example" {
