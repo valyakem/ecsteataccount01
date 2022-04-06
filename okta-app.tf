@@ -13,7 +13,7 @@ output "sensitive_example_hash" {
 provider "okta" {
   org_name  = var.org_name
   base_url  = var.base_url
-  api_token = "${data.aws_secretsmanager_secret.secrets.id}"
+  api_token = "${data.aws_secretsmanager_secret_version.current.secret_id}"
 }
 
 resource "okta_group_schema_property" "example" {
