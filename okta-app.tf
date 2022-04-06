@@ -31,3 +31,4 @@ resource "okta_user_schema_property" "example" {
 }
 
 
+//okta additions
