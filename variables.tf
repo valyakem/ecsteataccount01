@@ -3,7 +3,6 @@
 # # }
 variable "org_name" {
   type = string
-  default = ""
 }
 
 variable "base_url" {
@@ -13,7 +12,6 @@ variable "base_url" {
 
 variable "api_token" {
   type = string
-  default = ""
 }
 
 
