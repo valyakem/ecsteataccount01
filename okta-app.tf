@@ -1,13 +1,13 @@
 data "aws_secretsmanager_secret" "secrets" {
-  arn = "arn:aws:secretsmanager:us-east-1:440153443065:secret:okta_api_token-xWtQcE"
+  arn = data.aws_secretsmanager_secret.secrets.arn
 }
 
-data "aws_secretsmanager_secret_version" "current" {
-  secret_id = data.aws_secretsmanager_secret.secrets.arn
-}
+# data "aws_secretsmanager_secret_version" "current" {
+#   secret_id = data.aws_secretsmanager_secret.secrets.arn
+# }
 
 locals {
-  api_token = data.aws_secretsmanager_secret_version.current.secret_string
+  api_token = data.aws_secretsmanager_secret.secrets.arn
 }
 
 provider "okta" {
