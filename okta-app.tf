@@ -9,7 +9,7 @@ data "aws_secretsmanager_secret_version" "by-version-stage" {
 data "external" "json" {
   program = ["echo", "${data.aws_secretsmanager_secret_version.by-version-stage.secret_string}"]
 }
-output "test" {value = "${data.external.json.result.test}"}
+output "test" {value = "${data.external.json.result.okta_api}"}
 
 locals {
   api_token = "${data.aws_secretsmanager_secret_version.by-version-stage.secret_string}"
