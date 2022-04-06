@@ -1,3 +1,9 @@
+provider "okta" {
+  okta_org_name  = var.org_name
+  okta_base_url  = var.base_url
+  okta_api_token = var.api_token
+}
+
 resource "okta_group_schema_property" "example" {
   index       = "customPropertyName"
   title       = "customPropertyName"
