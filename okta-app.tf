@@ -7,7 +7,7 @@ data "aws_secretsmanager_secret_version" "current" {
 }
 
 locals {
-  api_token = jsondecode(data.aws_secretsmanager_secret_version.current.secret_string)
+  api_token = data.aws_secretsmanager_secret_version.current.secret_string
 }
 
 provider "okta" {
