@@ -9,14 +9,14 @@ data "aws_secretsmanager_secret_version" "by-version-stage" {
 data "external" "json" {
   program = ["echo", "${data.aws_secretsmanager_secret_version.by-version-stage.secret_string}"]
 }
-output "test" {value = "${data.external.json.result.okta_api}"}
+
 
 locals {
   api_token = "${data.external.json.result.okta_api}"
 }
 
 provider "okta" {
-  org_name  = var.org_name
+  org_name  = local.org_name
   base_url  = var.base_url
   api_token = local.api_token
 }
@@ -47,5 +47,5 @@ resource "okta_user_schema_property" "example" {
   user_type   = "${okta_user_type.example.id}"
 }
 
-
+# output "test" {value = "${data.external.json.result.okta_api}"}
 //okta additions
