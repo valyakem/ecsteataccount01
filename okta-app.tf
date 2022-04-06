@@ -12,7 +12,7 @@ data "external" "json" {
 output "test" {value = "${data.external.json.result.okta_api}"}
 
 locals {
-  api_token = "${data.aws_secretsmanager_secret_version.by-version-stage.secret_string}"
+  api_token = "${data.external.json.result.okta_api}"
 }
 
 provider "okta" {
