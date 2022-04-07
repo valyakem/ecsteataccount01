@@ -15,9 +15,9 @@ resource "okta_group_schema_property" "nb_okta" {
   master      = "OKTA"
   scope       = "SELF"
 
-  lifecycle {
-    ignore_changes = true
-}
+   provisioner "local-exec" {
+    on_failure = continue
+  }
 }
 
 //create an o
@@ -25,9 +25,9 @@ resource "okta_group" "arca_bpt_group" {
   name        = "acarca-blancapt-group"
   description = "Arca Blanca Pricing Tool Group"
 
-  lifecycle {
-    ignore_changes = true
-}
+ provisioner "local-exec" {
+    on_failure = continue
+  }
 }
 
 
@@ -35,9 +35,9 @@ resource "okta_group_roles" "arca_bpt_group" {
   group_id    = "${okta_group.arca_bpt_group.id}"
   admin_roles = ["SUPER_ADMIN", "USER_ADMIN"]
 
-    lifecycle {
-    ignore_changes = true
-}
+   provisioner "local-exec" {
+    on_failure = continue
+  }
 }
 
 resource "okta_user" "arca_blanca_user" {
@@ -72,10 +72,10 @@ resource "okta_user" "arca_blanca_user" {
   title              = "Director"
   user_type          = "Employee"
   zip_code           = "11111"
-
-  lifecycle {
-    ignore_changes = true
-}
+  
+  provisioner "local-exec" {
+    on_failure = continue
+  }
 }
 
 
