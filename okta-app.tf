@@ -1,53 +1,3 @@
-//-----------Get Secrets from the secret manager --------------------//
-resource "aws_secretsmanager_secret" "example" {
-  name = "example"
-}
-
-resource "aws_secretsmanager_secret_policy" "example" {
-  secret_arn = aws_secretsmanager_secret.example.arn
-
-  policy = <<POLICY
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "EnableAnotherAWSAccountToReadTheSecret",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::123456789012:root"
-      },
-      "Action": "secretsmanager:GetSecretValue",
-      "Resource": "*"
-    }
-  ]
-}
-POLICY
-}
-
-
-//-----------------------------------------------------------------------
-//get the arn of the specific secret manager
-data "aws_secretsmanager_secret" "arcablanca_secrets" {
-  arn = "arn:aws:secretsmanager:us-east-1:440153443065:secret:okta_api-imYrkl"
-
-  depends_on = []
-}
-
-//Get the current secret version
-data "aws_secretsmanager_secret_version" "arcablanca_current" {
-  secret_id = "${data.aws_secretsmanager_secret.arcablanca_secrets.id}"
-}
-
-//get tke keys and values as from the json file
-data "external" "json" {
-  program = ["echo", "${data.aws_secretsmanager_secret_version.arcablanca_current.secret_string}"]
-}
-
-//declare local variables and pass the values of the secrets 
-locals {
-  api_token = "${data.external.json.result.okta_api}"
-  org_name = "${data.external.json.result.org_name}"
-}
 //----------------------------------------------------------------------------
 //create okta provider
 provider "okta" {
@@ -64,12 +14,20 @@ resource "okta_group_schema_property" "nb_okta" {
   description = "My custom property name"
   master      = "OKTA"
   scope       = "SELF"
+
+  lifecycle {
+    ignore_updates = true
+}
 }
 
 //create an o
 resource "okta_group" "arca_bpt_group" {
   name        = "acarca-blancapt-group"
   description = "Arca Blanca Pricing Tool Group"
+
+  lifecycle {
+    ignore_updates = true
+}
 }
 
 
@@ -110,6 +68,10 @@ resource "okta_user" "arca_blanca_user" {
   title              = "Director"
   user_type          = "Employee"
   zip_code           = "11111"
+
+  lifecycle {
+    ignore_updates = true
+}
 }
 
 

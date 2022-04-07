@@ -1,4 +1,7 @@
 #==========================DB INSTANCE CODES======================
+locals {
+  abpt-dbpwd = "${data.external.rdsjson.result.abpt-dbpwd}"
+}
 #-------------------------------------------------------------------
 resource "aws_db_instance" "arcablanca_pt_rds" {
   identifier                    = "${var.rdsidentifier}"
@@ -8,7 +11,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
   engine                        = "postgres"
   engine_version                = "10"
   username                      = "arcablancausr"
-  password                      = jsondecode(data.aws_secretsmanager_secret_version.creds.secret_string)
+  password                      = local.abpt-dbpwd
   db_subnet_group_name          = "${aws_db_subnet_group.arcablanca_pt_rds.id}"
  #vpc_security_group_ids        = [module.security_groups.name]
   parameter_group_name          = "${var.parameter_group_name}"

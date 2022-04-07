@@ -18,15 +18,3 @@ resource "aws_secretsmanager_secret_version" "abptrds_sversion" {
 EOF
 }
 
-data "aws_secretsmanager_secret" "secretmasterDB" {
-  arn = aws_secretsmanager_secret.abpt_masterDB.arn
-
-  depends_on = [aws_secretsmanager_secret.abpt_masterDB]
-}
- 
-# Importing the AWS secret version created previously using arn.
-data "aws_secretsmanager_secret_version" "creds" {
-  secret_id = data.aws_secretsmanager_secret.secretmasterDB.arn
-
-  depends_on = [aws_secretsmanager_secret_version.abptrds_sversion]
-}
