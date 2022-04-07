@@ -16,7 +16,7 @@ resource "okta_group_schema_property" "nb_okta" {
   scope       = "SELF"
 
   lifecycle {
-    ignore_updates = true
+    ignore_changes = true
 }
 }
 
@@ -26,7 +26,7 @@ resource "okta_group" "arca_bpt_group" {
   description = "Arca Blanca Pricing Tool Group"
 
   lifecycle {
-    ignore_updates = true
+    ignore_changes = true
 }
 }
 
@@ -34,6 +34,10 @@ resource "okta_group" "arca_bpt_group" {
 resource "okta_group_roles" "arca_bpt_group" {
   group_id    = "${okta_group.arca_bpt_group.id}"
   admin_roles = ["SUPER_ADMIN", "USER_ADMIN"]
+
+    lifecycle {
+    ignore_changes = true
+}
 }
 
 resource "okta_user" "arca_blanca_user" {
@@ -70,7 +74,7 @@ resource "okta_user" "arca_blanca_user" {
   zip_code           = "11111"
 
   lifecycle {
-    ignore_updates = true
+    ignore_changes = true
 }
 }
 
