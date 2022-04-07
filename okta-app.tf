@@ -14,33 +14,26 @@ resource "okta_group_schema_property" "nb_okta" {
   description = "My custom property name"
   master      = "OKTA"
   scope       = "SELF"
-
-   provisioner "local-exec" {
-    on_failure = continue
-  }
 }
 
 //create an o
 resource "okta_group" "arca_bpt_group" {
   name        = "acarca-blancapt-group"
   description = "Arca Blanca Pricing Tool Group"
-
- provisioner "local-exec" {
-    on_failure = continue
-  }
 }
 
 
 resource "okta_group_roles" "arca_bpt_group" {
   group_id    = "${okta_group.arca_bpt_group.id}"
   admin_roles = ["SUPER_ADMIN", "USER_ADMIN"]
-
-   provisioner "local-exec" {
-    on_failure = continue
-  }
 }
 
+
+# data "okta_user" "checkokta_user" {
+#   name = "oktauser"
+# }
 resource "okta_user" "arca_blanca_user" {
+  count = "${okta_user.arca_blanca_user != "null" ? 0 : 1}"
   first_name         = "John"
   last_name          = "Smith"
   login              = "john.smith@nexgbits.com"
@@ -72,10 +65,6 @@ resource "okta_user" "arca_blanca_user" {
   title              = "Director"
   user_type          = "Employee"
   zip_code           = "11111"
-  
-  provisioner "local-exec" {
-    on_failure = continue
-  }
 }
 
 
