@@ -1,3 +1,19 @@
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = "_%@"
+}
+
+resource "aws_secretsmanager_secret_version" "sversion" {
+  secret_id = aws_secretsmanager_secret.secretmasterDB.id
+  secret_string = <<EOF
+   {
+    "username": "adminaccount",
+    "password": "${random_password.password.result}"
+   }
+EOF
+}
+
 module "vpc" {
   source             = "./vpc"
   name               = var.vpcname
@@ -57,8 +73,112 @@ module "ecs" {
 }
 
 
+#-------------------------- MODULE SECRET MANAGER ----------------------------#
+module "secrets-manager-2" {
+
+  #source = "lgallard/secrets-manager/aws"
+  source = "./secret-mgr"
+
+  secrets = {
+    secret-kv-1 = {
+      description = "This is a key/value secret"
+      secret_key_value = {
+        dbadmin = "abpt-adm"
+        key2 = "${random_password.password.result}"
+      }
+      recovery_window_in_days = 7
+      policy                  = <<POLICY
+				{
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Sid": "EnableAllPermissions",
+							"Effect": "Allow",
+							"Principal": {
+								"AWS": "*"
+							},
+							"Action": "secretsmanager:GetSecretValue",
+							"Resource": "*"
+						}
+					]
+				}
+				POLICY
+    },
+    secret-kv-2 = {
+      description = "Another key/value secret"
+      secret_key_value = {
+        okta_org_name = null
+        okta_api_token = null
+      }
+      tags = {
+        app = "web"
+      }
+      recovery_window_in_days = 7
+      policy                  = null
+    },
+  }
+
+  tags = {
+    Owner       = "DevOps team"
+    Environment = "dev"
+    Terraform   = true
+  }
+}
 
 
+module "secrets-manager-4" {
+  #source = "lgallard/secrets-manager/aws"
+  source = "./secret-mgr"
+
+  rotate_secrets = {
+    secret-rotate-1 = {
+      description             = "This is a secret to be rotated by a lambda"
+      secret_string           = "This is an example"
+      rotation_lambda_arn     = "arn:aws:lambda:us-east-1:440153443065:function:lambda-rotate-secret"
+      recovery_window_in_days = 15
+    },
+    secret-rotate-2 = {
+      description             = "This is another secret to be rotated by a lambda"
+      secret_string           = "This is another example"
+      rotation_lambda_arn     = "arn:aws:lambda:us-east-1:440153443065:function:lambda-rotate-secret"
+      recovery_window_in_days = 7
+    },
+  }
+
+  tags = {
+    Owner       = "DevOps team"
+    Environment = "dev"
+    Terraform   = true
+  }
+
+}
+
+# Lambda to rotate secrets
+# AWS temaplates available here https://github.com/aws-samples/aws-secrets-manager-rotation-lambdas
+module "rotate_secret_lambda" {
+  source  = "./secret-mgr"
+
+  filename         = "secrets_manager_rotation.zip"
+  function_name    = "secrets-manager-rotation"
+  handler          = "secrets_manager_rotation.lambda_handler"
+  runtime          = "python3.7"
+  source_code_hash = filebase64sha256("${path.module}/secrets_manager_rotation.zip")
+
+  environment = {
+    variables = {
+      SECRETS_MANAGER_ENDPOINT = "https://secretsmanager.us-east-1.amazonaws.com"
+    }
+  }
+
+}
+
+resource "aws_lambda_permission" "allow_secret_manager_call_Lambda" {
+  function_name = module.rotate_secret_lambda.function_name
+  statement_id  = "AllowExecutionSecretManager"
+  action        = "lambda:InvokeFunction"
+  principal     = "secretsmanager.amazonaws.com"
+}
+#----------------------
 #-------------------------------------------------------------------------------#
 #=================================RDS MODULE====================================#
 #-------------------------------------------------------------------------------#
