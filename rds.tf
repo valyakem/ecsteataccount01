@@ -1,7 +1,4 @@
 #==========================DB INSTANCE CODES======================
-locals {
-  abpt-dbpwd = "${data.external.rdsjson.result.abpt-dbpwd}"
-}
 #-------------------------------------------------------------------
 resource "aws_db_instance" "arcablanca_pt_rds" {
   identifier                    = "${var.rdsidentifier}"
