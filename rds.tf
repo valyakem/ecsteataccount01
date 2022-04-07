@@ -8,7 +8,7 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
   engine                        = "postgres"
   engine_version                = "10"
   username                      = "arcablancausr"
-  password                      = var.db_password
+  password                      = jsondecode(data.aws_secretsmanager_secret_version.creds.secret_string)
   db_subnet_group_name          = "${aws_db_subnet_group.arcablanca_pt_rds.id}"
  #vpc_security_group_ids        = [module.security_groups.name]
   parameter_group_name          = "${var.parameter_group_name}"
@@ -16,6 +16,8 @@ resource "aws_db_instance" "arcablanca_pt_rds" {
   skip_final_snapshot           = true
   auto_minor_version_upgrade    = false
   backup_window                 = "01:00-01:30" 
+
+  depends_on = [module.vpc.id, random_password.password]
 }
 
 #==========================DB SUBNET GROUP======================

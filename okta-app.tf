@@ -29,6 +29,8 @@ POLICY
 //get the arn of the specific secret manager
 data "aws_secretsmanager_secret" "arcablanca_secrets" {
   arn = "arn:aws:secretsmanager:us-east-1:440153443065:secret:okta_api-imYrkl"
+
+  depends_on = []
 }
 
 //Get the current secret version
