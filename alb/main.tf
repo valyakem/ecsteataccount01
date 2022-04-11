@@ -68,6 +68,51 @@ resource "aws_alb_listener" "https" {
     }
 }
 
+resource "aws_wafv2_web_acl" "abpt_web_acl" {
+  name  = "abpt-web-acl"
+  scope = "REGIONAL"
+
+  default_action {
+    allow {}
+  }
+
+  rule {
+    name     = "RateLimit"
+    priority = 1
+
+    action {
+      block {}
+    }
+
+    statement {
+
+      rate_based_statement {
+        aggregate_key_type = "IP"
+        limit              = 500
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "RateLimit"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = false
+    metric_name                = "abpt-web-acl"
+    sampled_requests_enabled   = false
+  }
+}
+
+########### This is the association code
+
+resource "aws_wafv2_web_acl_association" "web_acl_association_my_lb" {
+  resource_arn = aws_lb.main.arn
+  web_acl_arn  = aws_wafv2_web_acl.abpt_web_acl.arn
+}
+
 output "aws_alb_target_group_arn" {
   value = aws_alb_target_group.main.arn
 }

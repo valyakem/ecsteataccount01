@@ -8,6 +8,7 @@ resource "random_password" "password" {
 resource "aws_secretsmanager_secret" "abpt_masterDB" {
    name = "abpt-rds"
 }
+
 resource "aws_secretsmanager_secret_version" "abptrds_sversion" {
   secret_id = aws_secretsmanager_secret.abpt_masterDB.id
   secret_string = <<EOF
